@@ -89,7 +89,7 @@ async function getPosts(reload = false, page = 1) {
 
 // GET POSTS IN THE PAGE //
 function toProfile(id) {
-  window.location.href = `../html/profilePageUser.html?postsId=${id}`;
+  window.location.href = `../profilePageUser.html?postsId=${id}`;
 }
 
 // Create ||  Edit  post //

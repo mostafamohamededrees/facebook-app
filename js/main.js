@@ -233,7 +233,7 @@ function registerSubmit() {
 
 // this function is very important for throw id to next page to allow me use id to get the post that i clicked it to show me
 function postClicked(id) {
-  window.location = `../html/postDetails.html?postsId=${id}`;
+  window.location = `../postDetails.html?postsId=${id}`;
 }
 
 function editPost(obj) {
@@ -307,7 +307,7 @@ function profileClicked() {
   user = JSON.parse(localStorage.getItem("user"));
   let id = user.id;
 
-  window.location.href = `../html/profilePageUser.html?postsId=${id}`;
+  window.location.href = `../profilePageUser.html?postsId=${id}`;
 }
 
 function loader(show = true) {
@@ -319,5 +319,5 @@ function loader(show = true) {
 }
 
 function toProfile(id) {
-  window.location.href = `profilePageUser.html?postsId=${id}`;
+  window.location.href = `../profilePageUser.html?postsId=${id}`;
 }
