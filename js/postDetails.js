@@ -91,7 +91,7 @@ function getClickedPost() {
         document.getElementById("name").innerHTML = data.author.username;
       });
   } catch (error) {
-    sucessAlert("Something went wrong", "danger");
+    sucessAlert("Something went wrong", danger);
   } finally {
     loader(false);
   }
