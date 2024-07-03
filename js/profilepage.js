@@ -1,6 +1,7 @@
 const cardProfile = document.getElementById("cardProfile");
 let baseUrl = `https://tarmeezacademy.com/api/v1`;
 
+// CREATE POST  + //
 async function createPost() {
   setupUi();
 
@@ -37,8 +38,10 @@ async function createPost() {
     loader(false);
   }
 }
+// CREATE POST  + //
 
-function delPost() {
+// DELETE POST //
+async function delPost() {
   const id = document.getElementById("inputHidenPassIdForDelPost").value;
   const token = localStorage.getItem("token");
 
@@ -48,36 +51,65 @@ function delPost() {
   };
 
   loader(true);
-  axios
-    .delete(`https://tarmeezacademy.com/api/v1/posts/${id}`, { headers })
-    .then((response) => {
-      const modal = document.getElementById("delete_post_modal");
-      bootstrap.Modal.getInstance(modal).hide();
-      sucessAlert("The Post Has Been Removed Successfully", "success");
-      getPostsUser();
-    })
-    .catch((error) => {
-      sucessAlert(error.response.data.message, "danger");
-    })
-    .finally(() => loader(false));
+
+  try {
+    const response = await axios.delete(
+      `https://tarmeezacademy.com/api/v1/posts/${id}`,
+      { headers }
+    );
+    hideModal("delete_post_modal");
+    sucessAlert("The Post Has Been Removed Successfully", "success");
+    getPostsUser();
+  } catch (error) {
+    const errorMessage =
+      error.response?.data?.message ||
+      "An error occurred while deleting the post";
+    showAlert(errorMessage, "danger");
+  } finally {
+    loader(false);
+  }
 }
 
+function hideModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    bootstrap.Modal.getInstance(modal)?.hide();
+  }
+}
+
+// DELETE POST //
+
+// GET USER ID FROM URL PARAMS
 function getCurrentUserId() {
   const urlParams = new URLSearchParams(window.location.search);
   return urlParams.get("postsId");
 }
+// GET USER ID FROM URL PARAMS
 
-function detailsUser() {
+// GET USER DETAILS IN THE PAGE //
+async function detailsUser() {
   const id = getCurrentUserId();
   loader(true);
-  axios
-    .get(`https://tarmeezacademy.com/api/v1/users/${id}`)
-    .then((response) => {
-      loader(false);
-      const user = response.data.data;
+  try {
+    const response = await axios.get(
+      `https://tarmeezacademy.com/api/v1/users/${id}`
+    );
+    loader(false);
+    const user = response.data.data;
 
-      content = ` <div class="row">
-      <div class="col-sm-12 col-lg ">
+    const content = generateUserProfileHTML(user);
+    cardProfile.innerHTML = content;
+    document.getElementById("name").innerHTML = `${user.username}'s`;
+  } catch (error) {
+    loader(false);
+    console.error("Failed to fetch user details:", error);
+  }
+}
+
+function generateUserProfileHTML(user) {
+  return `
+    <div class="row">
+      <div class="col-sm-12 col-lg">
         <img
           style="width: 120px; height: 120px"
           src="${user.profile_image}"
@@ -95,20 +127,18 @@ function detailsUser() {
         }</div>
         <div>${user.username}</div>
       </div>
-  
-      <div class="col-lg-4 col-sm-3  d-flex flex-column justify-content-evenly">
-        <div class="text-black-50 numberComent"><span>${
-          user.posts_count
-        }</span> posts</div>
+      <div class="col-lg-4 col-sm-3 d-flex flex-column justify-content-evenly">
+        <div class="text-black-50 numberComent">
+          <span>${user.posts_count}</span> posts
+        </div>
         <div class="text-black-50 numberComent">
           <span>${user.comments_count}</span> comments
         </div>
       </div>
     </div>`;
-      cardProfile.innerHTML = content;
-      document.getElementById("name").innerHTML = `${user.username}'s`;
-    });
 }
+// GET USER DETAILS IN THE PAGE //
+
 // GET POST'S USER IN THE PAGE //
 async function getPostsUser() {
   const id = getCurrentUserId();

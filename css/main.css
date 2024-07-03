@@ -25,12 +25,11 @@ body {
 .dataUser {
   cursor: pointer;
 }
-#success_alert {
+.alert {
   position: fixed;
   bottom: 0;
   right: 0;
   z-index: 99999;
-  width: 30%;
 }
 #taken,
 #wrongResponse,
@@ -49,6 +48,9 @@ body {
   right: 5%;
   font-size: 45px;
   text-align: center;
+  display: block;
+  align-items: center;
+  justify-content: center;
   line-height: 53px;
   cursor: pointer;
   display: none;

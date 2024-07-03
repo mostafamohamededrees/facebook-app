@@ -91,34 +91,42 @@ function getClickedPost() {
         document.getElementById("name").innerHTML = data.author.username;
       });
   } catch (error) {
-    sucessAlert("Something went wrong", danger);
+    sucessAlert("Something went wrong", "danger");
   } finally {
     loader(false);
   }
 }
 // GET DETAILS POST THAT I CLICKED //
-
-function addComment() {
+async function addComment() {
   let inputComment = document.querySelector(".yourComment").value;
   let token = localStorage.getItem("token");
+
   const params = {
     body: inputComment,
   };
+
   loader(true);
+
   try {
-    axios
-      .post(`https://tarmeezacademy.com/api/v1/posts/${id}/comments`, params, {
+    await axios.post(
+      `https://tarmeezacademy.com/api/v1/posts/${id}/comments`,
+      params,
+      {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      })
-      .then(() => {
-        getClickedPost();
-        sucessAlert("the comment has been added successfuly", "success");
-      });
+      }
+    );
+
+    getClickedPost(id);
+    console.log("Comment added successfully");
+    sucessAlert("The comment has been added successfully", "success");
   } catch (error) {
-    let x = error.response.data.message;
-    sucessAlert("Please Login", "danger");
+    let errorMessage = error.response.data.message;
+    if (errorMessage == "Unauthenticated.") {
+      errorMessage = "Please login, to add a comment";
+    }
+    sucessAlert(errorMessage, "danger");
   } finally {
     loader(false);
   }

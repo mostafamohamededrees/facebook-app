@@ -4,7 +4,7 @@ template.innerHTML = `
   <div class="w-100">
       <nav class="navbar navbar-expand-lg bg-body-tertiary pb-3 shadow ">
         <div class="container-fluid mx-lg-5">
-          <a class="navbar-brand fw-bold fs-4 text-primary " href="index.html">FACEBOOK</a>
+          <a class="navbar-brand fw-bold fs-4 text-primary" href="index.html">FACEBOOK</a>
             <div class="d-flex flex-grow-1 justify-content-end" id="divLogin">
               <button
                 type="button"
@@ -303,7 +303,7 @@ modelCreatePostTemplate.innerHTML = `
               type="button"
               id="btnCreatePost"
               class="btn btn-primary"
-              onclick="createPost()"
+              onclick="createOrEditPost()"
             >
               Create
             </button>
