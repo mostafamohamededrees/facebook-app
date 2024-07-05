@@ -38,6 +38,9 @@ body {
   font-size: 13px;
   color: red;
 }
+i {
+  cursor: pointer;
+}
 
 .create {
   position: fixed;
@@ -81,7 +84,7 @@ textarea:focus {
   padding: 6px;
   padding-left: 12px;
   border-radius: 10px;
-  border: 1px solid #203763;
+  border: 1px solid  #dee2e6;
   -webkit-border-radius: 10px;
   -moz-border-radius: 10px;
   -ms-border-radius: 10px;
@@ -101,6 +104,23 @@ textarea:focus {
   -moz-border-radius: 8px;
   -ms-border-radius: 8px;
   -o-border-radius: 8px;
+}
+
+.comments {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+  -webkit-transition: max-height 0.3s ease-out;
+  -moz-transition: max-height 0.3s ease-out;
+  -ms-transition: max-height 0.3s ease-out;
+  -o-transition: max-height 0.3s ease-out;
+}
+
+.comments.show {
+  max-height: 700px;
+  overflow: hidden;
+  overflow: scroll;
+  padding: 1rem;
 }
 
 .numberComent span {

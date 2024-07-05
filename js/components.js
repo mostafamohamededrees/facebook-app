@@ -13,7 +13,7 @@ template.innerHTML = `
                 data-bs-target="#login_submit"
                 data-bs-whatever="@mdo"
               >
-                Login
+                Login 
               </button>
               <button
                 type="button"
@@ -28,7 +28,7 @@ template.innerHTML = `
               class="d-flex flex-grow-1 divLogout justify-content-end"
               id="divLogout"
             >
-              <div class="dataUser" onclick="profileClicked()">
+              <div class="dataUser" onclick="profileCurrentUser()">
                 <img
                   id="nav_imgUser"
                   class="img rounded-circle border border-2"

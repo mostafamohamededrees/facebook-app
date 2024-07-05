@@ -21,7 +21,7 @@ window.addEventListener(
       page++;
       console.log(page);
 
-      getPosts(false, page);
+      getPosts(page);
     }
   }, 100)
 );
@@ -61,25 +61,31 @@ function createPostHTML(tweet) {
   let isMyPost = user != null && tweet.author.id === user.id;
 
   let btnEditedContent = isMyPost
-    ? `
-      <button type="button" class="btn btn-primary ms-2" style="float:right;" onclick="editPost('${encodeURIComponent(
-        JSON.stringify(tweet)
-      )}')">Edit</button>
-      <button type="button" class="btn btn-outline-danger float-end" onclick="delBtnClicked(${
-        tweet.id
-      })">Delete</button>`
+    ? `<div  class="d-flex align-items-center justify-content-between">
+        <i onclick="editPostModal('${encodeURIComponent(
+          JSON.stringify(tweet)
+        )}')" class="fa-regular fa-pen-to-square text-primary me-2 fs-3 cursor-pointer"></i>
+        <i onclick="delBtnClicked(${
+          tweet.id
+        })"class="fa-solid fa-trash text-danger fs-3"></i>
+     </div>
+    `
     : "";
 
   return `
     <div class="card shadow mb-5 mt-4">
-      <div class="card-header">
+      <div class="card-header d-flex justify-content-between align-items-center ">
+      <div>
         <img onclick="toProfile(${tweet.author.id})" role='button'
           src="${tweet.author.profile_image}"
           class="img rounded-circle border border-2"
           alt=""
         />
         <b onclick="toProfile(${tweet.author.id})" role='button'>${tweet.author.username}</b> 
-        ${btnEditedContent}
+      </div>
+        <div class="d-flex align-items-center justify-content-center">
+          ${btnEditedContent}
+        </div>
       </div>
       <div class="card-body pb-0" onclick="postClicked(${tweet.id})" style="cursor:pointer;">
         <div class="card-title"><img src="${tweet.image}" alt=""> <span class="text-black-50">${tweet.created_at}</span></div>
@@ -95,58 +101,4 @@ function createPostHTML(tweet) {
         </p>
       </div>
     </div>`;
-}
-// GET POSTS IN THE PAGE //
-
-// TO PROFILE PAGE //
-function toProfile(id) {
-  window.location.href = `../profilePageUser.html?postsId=${id}`;
-}
-// TO PROFILE PAGE //
-
-// CREATE POST + || EDIT POST //
-async function createOrEditPost() {
-  setupUi();
-
-  const tweetId = document.getElementById("input-hidden-forPassId").value;
-  const isCreate = !tweetId;
-  const title = document.getElementById("create_post_title").value;
-  const body = document.getElementById("create_post_body").value;
-  const image = document.getElementById("create_post_image").files[0];
-  const token = localStorage.getItem("token");
-
-  const formData = new FormData();
-  formData.append("title", title);
-  formData.append("body", body);
-  formData.append("image", image);
-
-  const headers = {
-    authorization: `Bearer ${token}`,
-    "Content-Type": "multipart/form-data",
-  };
-
-  const baseUrl = `https://tarmeezacademy.com/api/v1`;
-  const url = isCreate ? `${baseUrl}/posts` : `${baseUrl}/posts/${tweetId}`;
-  if (!isCreate) {
-    formData.append("_method", "PUT");
-  }
-
-  loader(true);
-
-  try {
-    const response = await axios.post(url, formData, { headers });
-    const modal = document.getElementById("create_post");
-    bootstrap.Modal.getInstance(modal).hide();
-    const alertMessage = isCreate
-      ? "New Post Added Successfully"
-      : "Post Updated Successfully";
-    sucessAlert(alertMessage, "success");
-    getPosts(page);
-  } catch (error) {
-    document.getElementById("wrongResponse").innerHTML =
-      error.response.data.message;
-    sucessAlert(error.response.data.message, "danger");
-  } finally {
-    loader(false);
-  }
 }
