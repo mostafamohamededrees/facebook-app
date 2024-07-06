@@ -48,6 +48,10 @@ function successAlert(customMessage, type) {
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>`;
   alertPlaceholder.append(wrapper);
+  // Remove the alert after 2000 milliseconds (2 seconds)
+  setTimeout(() => {
+    wrapper.remove();
+  }, 3000);
 }
 // ALERT FUNCTION //
 
