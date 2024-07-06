@@ -20,15 +20,15 @@ function setupUi() {
 
   if (!token) {
     if (btnPost) {
-      btnPost.style.display == "none";
+      btnPost.style.setProperty("display", "none", "important");
     }
     // not loged in
-    divLogout.style.setProperty.display = "none";
-    divLogout.style.setProperty.display = "flex";
+    divLogout.style.setProperty("display", "none", "important");
+    divLogin.style.setProperty("display", "flex", "important");
     document.getElementById("userName").innerHTML = "";
   } else {
-    if (btnPost != null) {
-      btnPost.style.display = "block";
+    if (btnPost) {
+      btnPost.style.setProperty("display", "block", "important");
     }
     divLogin.style.setProperty("display", "none", "important");
     divLogout.style.setProperty("display", "flex", "important");
@@ -171,7 +171,6 @@ async function createOrEditPost() {
   const title = document.getElementById("create_post_title").value;
   const body = document.getElementById("create_post_body").value;
   const image = document.getElementById("create_post_image").files[0];
-  const token = localStorage.getItem("token");
 
   const formData = new FormData();
   formData.append("title", title);
