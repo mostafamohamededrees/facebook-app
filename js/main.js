@@ -103,6 +103,7 @@ async function loginSubmit() {
     const modal = document.getElementById("login_submit");
     bootstrap.Modal.getInstance(modal).hide();
     setupUi();
+    getPosts(page);
     successAlert("Logged in Successfully", "success");
   } catch (error) {
     document.getElementById("errorPassword").innerHTML =
@@ -157,6 +158,7 @@ function logOut() {
   localStorage.removeItem("token");
   localStorage.removeItem("user");
   setupUi();
+  getPosts(page);
   loader(false);
   successAlert("Logged Out Successfully", "danger");
 }
