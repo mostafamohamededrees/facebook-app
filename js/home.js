@@ -19,8 +19,6 @@ window.addEventListener(
 
     if (endpage && !lastPage) {
       page++;
-      console.log(page);
-
       getPosts(page);
     }
   }, 100)

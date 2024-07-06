@@ -17,7 +17,7 @@ function getCurrentUserId() {
   return urlParams.get("postsId");
 }
 
-// Function to delete post // 
+// Function to delete post //
 async function delPost() {
   const id = document.getElementById("inputHidenPassIdForDelPost").value;
   const token = localStorage.getItem("token");
@@ -44,7 +44,6 @@ async function delPost() {
   }
 }
 
-
 // Function to get user details and display them on the page //
 async function detailsUser() {
   const id = getCurrentUserId();
@@ -57,7 +56,6 @@ async function detailsUser() {
     cardProfile.innerHTML = content;
     document.getElementById("name").innerHTML = `${user.username}'s`;
   } catch (error) {
-    console.error("Failed to fetch user details:", error);
   } finally {
     loader(false);
   }

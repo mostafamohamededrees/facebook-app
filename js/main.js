@@ -5,11 +5,9 @@ setupUi();
 
 // LOADER FUNCTION //
 function loader(show = true) {
-  if (show) {
-    document.getElementById("loader").style.visibility = "vidible";
-  } else {
-    document.getElementById("loader").style.visibility = "hidden";
-  }
+  document.getElementById("loader").style.visibility = show
+    ? "visible"
+    : "hidden";
 }
 // LOADER FUNCTION //
 
@@ -20,19 +18,18 @@ function setupUi() {
     // here we need to turn json because we storge it formData //
     user = JSON.parse(localStorage.getItem("user"));
 
-  if (token == null) {
-    if (btnPost != null) {
-      btnPost.style.setProperty("display", "none", "important");
+  if (!token) {
+    if (btnPost) {
+      btnPost.style.display == "none";
     }
     // not loged in
-    divLogout.style.setProperty("display", "none", "important");
-    divLogin.style.setProperty("display", "flex", "important");
+    divLogout.style.setProperty.display = "none";
+    divLogout.style.setProperty.display = "flex";
     document.getElementById("userName").innerHTML = "";
   } else {
     if (btnPost != null) {
-      btnPost.style.setProperty("display", "block", "important");
+      btnPost.style.display = "block";
     }
-
     divLogin.style.setProperty("display", "none", "important");
     divLogout.style.setProperty("display", "flex", "important");
     document.getElementById("userName").innerHTML = user.username;
@@ -42,173 +39,130 @@ function setupUi() {
 // MAKE DIFFERENT UI FOR LOGIN AND LOGOUT //
 
 // ALERT FUNCTION //
-function sucessAlert(customMessage, type) {
+function successAlert(customMessage, type) {
   const alertPlaceholder = document.getElementById("success_alert");
-  const appendAlert = (message, type) => {
-    const wrapper = document.createElement("div");
-    wrapper.innerHTML = [
-      `<div class="alert alert-${type} alert-dismissible" role="alert">`,
-      `   <div>${message}</div>`,
-      '   <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>',
-      "</div>",
-    ].join("");
-
-    alertPlaceholder.append(wrapper);
-  };
-  appendAlert(customMessage, type);
+  const wrapper = document.createElement("div");
+  wrapper.innerHTML = `
+    <div class="alert alert-${type} alert-dismissible" role="alert">
+      <div>${customMessage}</div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>`;
+  alertPlaceholder.append(wrapper);
 }
 // ALERT FUNCTION //
 
-// ==== CUSTOM EDIT MODAL FOR POST ==== //
+// EDIT POST MODAL FUNCTION //
 function editPostModal(obj) {
-  let tweet = JSON.parse(decodeURIComponent(obj));
-  console.log(tweet);
-
+  const tweet = JSON.parse(decodeURIComponent(obj));
   document.getElementById("input-hidden-forPassId").value = tweet.id;
-
-  // custom  Modal for Edit post //
   document.getElementById("post_modal_title").innerHTML = "Edit Post";
   document.getElementById("create_post_title").value = tweet.title;
   document.getElementById("create_post_body").innerHTML = tweet.body;
   document.getElementById("btnCreatePost").innerHTML = "Update";
-
-  let postMpdal = new bootstrap.Modal(
-    document.getElementById("create_post"),
-    {}
-  );
-  postMpdal.toggle();
+  const postModal = new bootstrap.Modal(document.getElementById("create_post"));
+  postModal.toggle();
 }
-// ==== CUSTOM EDIT MODAL FOR POST ==== //
+// EDIT POST MODAL FUNCTION //
 
-// ==== CUSTOM MODAL FOR CREATE POST + ====  //
+// CREATE POST MODAL FUNCTION //
 function createModalPost() {
-  // custom  Modal for create Post + //
-  document.getElementById("post_modal_title").innerHTML = " Create New Post";
+  document.getElementById("post_modal_title").innerHTML = "Create New Post";
   document.getElementById("create_post_title").value = "";
   document.getElementById("create_post_body").innerHTML = "";
   document.getElementById("btnCreatePost").innerHTML = "Create";
-  let postMpdal = new bootstrap.Modal(
-    document.getElementById("create_post"),
-    {}
-  );
-  postMpdal.toggle();
+  const postModal = new bootstrap.Modal(document.getElementById("create_post"));
+  postModal.toggle();
 }
-// ==== CUSTOM MODAL FOR CREATE POST + ====  //
+// CREATE POST MODAL FUNCTION //
 
-// ==== CUSTOM MODAL FOR DELETE POST ====  //
+// DELETE POST MODAL FUNCTION //
 function delBtnClicked(id) {
-  let postMpdal = new bootstrap.Modal(
-    document.getElementById("delete_post_modal"),
-    {}
+  const postModal = new bootstrap.Modal(
+    document.getElementById("delete_post_modal")
   );
-  postMpdal.toggle();
+  postModal.toggle();
   document.getElementById("inputHidenPassIdForDelPost").value = id;
 }
-// ==== CUSTOM MODAL FOR DELETE POST ====  //
+// DELETE POST MODAL FUNCTION //
 
-// ==== LOGIN FUNCTION  ==== //
-function loginSubmit() {
+// LOGIN FUNCTION //
+async function loginSubmit() {
   const password = document.getElementById("password_input").value,
     userName = document.getElementById("username_input").value;
 
-  const params = {
-    username: userName,
-    password: password,
-  };
+  const params = { username: userName, password };
 
-  axios
-    .post("https://tarmeezacademy.com/api/v1/login", params)
-    .then((response) => {
-      const token = response.data.token,
-        user = response.data.user;
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-
-      const modal = document.getElementById("login_submit");
-      bootstrap.Modal.getInstance(modal).hide();
-      setupUi();
-      sucessAlert("Logged in Successfully", "success");
-    })
-    .catch((error) => {
-      console.log(error);
-      document.getElementById("errorPassword").innerHTML =
-        "Wrong Password or Username";
-      sucessAlert("Wrong Password or Username", "danger");
-    });
+  try {
+    const response = await axios.post(
+      "https://tarmeezacademy.com/api/v1/login",
+      params
+    );
+    const { token, user } = response.data;
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
+    const modal = document.getElementById("login_submit");
+    bootstrap.Modal.getInstance(modal).hide();
+    setupUi();
+    successAlert("Logged in Successfully", "success");
+  } catch (error) {
+    document.getElementById("errorPassword").innerHTML =
+      "Wrong Password or Username";
+    successAlert("Wrong Password or Username", "danger");
+  }
 }
-// ==== LOGIN FUNCTION  ==== //
+// LOGIN FUNCTION //
 
-// ==== REGISTER FUNCTION ==== //
-function registerSubmit() {
-  const userName = document.getElementById("register_username_input").value;
-  const name = document.getElementById("register_name_input").value;
-  const password = document.getElementById("register_password_input").value;
-  const profile_image = document.getElementById("register_image_input")
-    .files[0];
+// REGISTER FUNCTION //
+async function registerSubmit() {
+  const userName = document.getElementById("register_username_input").value,
+    name = document.getElementById("register_name_input").value,
+    password = document.getElementById("register_password_input").value,
+    profileImage = document.getElementById("register_image_input").files[0];
 
-  // here we use formData instead of JSON because we send image //
   const formData = new FormData();
   formData.append("username", userName);
   formData.append("password", password);
   formData.append("name", name);
-  formData.append("image", profile_image);
+  formData.append("image", profileImage);
 
-  const headers = {
-    "Content-Type": "multipart/form-data",
-  };
+  const headers = { "Content-Type": "multipart/form-data" };
 
   loader(true);
 
-  axios
-    .post("https://tarmeezacademy.com/api/v1/register", formData, {
-      headers: headers,
-    })
-    .then((response) => {
-      loader(false);
-
-      console.log(response.data);
-
-      const token = response.data.token,
-        user = response.data.user;
-
-      localStorage.setItem("token", token);
-      localStorage.setItem("user", JSON.stringify(user));
-
-      const modal = document.getElementById("register_submit");
-      bootstrap.Modal.getInstance(modal).hide();
-
-      setupUi();
-
-      sucessAlert("New User Register Successfully", "success");
-    })
-    .catch((error) => {
-      document.getElementById("taken").innerHTML += error.response.data.message;
-      sucessAlert(error.response.data.message, "danger");
-      // console.log(error);
-
-      // setTimeout(() => {
-      //   document.getElementById("taken").innerHTML = "";
-      //   document.getElementById("success_alert").innerHTML = "";
-      // }, 5000);
-    })
-    .finally(() => {
-      loader(false);
-    });
+  try {
+    const response = await axios.post(
+      "https://tarmeezacademy.com/api/v1/register",
+      formData,
+      { headers }
+    );
+    const { token, user } = response.data;
+    localStorage.setItem("token", token);
+    localStorage.setItem("user", JSON.stringify(user));
+    const modal = document.getElementById("register_submit");
+    bootstrap.Modal.getInstance(modal).hide();
+    setupUi();
+    successAlert("New User Registered Successfully", "success");
+  } catch (error) {
+    document.getElementById("taken").innerHTML = error.response.data.message;
+    successAlert(error.response.data.message, "danger");
+  } finally {
+    loader(false);
+  }
 }
-// ====  REGISTER FUNCTION ==== //
+// REGISTER FUNCTION //
 
-// ==== LOG OUT FUNCTION ==== //
+// LOG OUT FUNCTION //
 function logOut() {
   loader(true);
   localStorage.removeItem("token");
   localStorage.removeItem("user");
   setupUi();
   loader(false);
-  sucessAlert("Logged Out Successfully", "danger");
+  successAlert("Logged Out Successfully", "danger");
 }
 // LOG OUT FUNCTION //
 
-// === CREATE OR EDIT POST FUNCTION  === //
+// CREATE OR EDIT POST FUNCTION //
 async function createOrEditPost() {
   setupUi();
 
@@ -230,7 +184,6 @@ async function createOrEditPost() {
   };
 
   const baseUrl = `https://tarmeezacademy.com/api/v1`;
-
   const url = isCreate ? `${baseUrl}/posts` : `${baseUrl}/posts/${tweetId}`;
   if (!isCreate) {
     formData.append("_method", "PUT");
@@ -239,37 +192,30 @@ async function createOrEditPost() {
   loader(true);
 
   try {
-    console.log(tweetId);
-    const response = await axios.post(url, formData, { headers });
+    await axios.post(url, formData, { headers });
     const modal = document.getElementById("create_post");
     bootstrap.Modal.getInstance(modal).hide();
     const alertMessage = isCreate
       ? "New Post Added Successfully"
       : "Post Updated Successfully";
-    sucessAlert(alertMessage, "success");
-    if (isCreate) {
-      getPosts(page);
-    } else {
-      // Check if on profile page or home page
-      const isProfilePage = window.location.pathname.includes("profile");
-      if (isProfilePage) {
-        getPostsUser();
-      } else {
-        getPosts(page);
-      }
-    }
+    successAlert(alertMessage, "success");
+    isCreate
+      ? getPosts(page)
+      : window.location.pathname.includes("profile")
+      ? getPostsUser()
+      : getPosts(page);
   } catch (error) {
     document.getElementById("wrongResponse").innerHTML =
       error.response.data.message;
-    sucessAlert(error.response.data.message, "danger");
+    successAlert(error.response.data.message, "danger");
   } finally {
     loader(false);
   }
 }
-// === CREATE OR EDIT POST FUNCTION  === //
+// CREATE OR EDIT POST FUNCTION //
 
-// ==== DELETE POST FUNCTION ==== //
-function delPost() {
+// DELETE POST FUNCTION //
+async function delPost() {
   const id = document.getElementById("inputHidenPassIdForDelPost").value;
   const headers = {
     authorization: `Bearer ${token}`,
@@ -277,40 +223,33 @@ function delPost() {
   };
 
   loader(true);
-  axios
-    .delete(`https://tarmeezacademy.com/api/v1/posts/${id}`, {
-      headers: headers,
-    })
-    .then((response) => {
-      const modal = document.getElementById("delete_post_modal");
-      bootstrap.Modal.getInstance(modal).hide();
-      sucessAlert("The Post Has Been Removed Successfully", "success");
-      getPosts(page);
-    })
-    .catch((error) => {
-      sucessAlert(error.response.data.message, "danger");
-    })
-    .finally(() => loader(false));
+  try {
+    await axios.delete(`https://tarmeezacademy.com/api/v1/posts/${id}`, {
+      headers,
+    });
+    const modal = document.getElementById("delete_post_modal");
+    bootstrap.Modal.getInstance(modal).hide();
+    successAlert("The Post Has Been Removed Successfully", "success");
+    getPosts(page);
+  } catch (error) {
+    successAlert(error.response.data.message, "danger");
+  } finally {
+    loader(false);
+  }
 }
-// ==== DELETE POST FUNCTION ==== //
+// DELETE POST FUNCTION //
 
-// TO GO TO PROFILE PAGE FOR CURRENT USER  ==> //
+// NAVIGATION FUNCTIONS //
 function profileCurrentUser() {
-  user = JSON.parse(localStorage.getItem("user"));
-  let id = user.id;
-
-  window.location.href = `../profilePageUser.html?postsId=${id}`;
+  const user = JSON.parse(localStorage.getItem("user"));
+  window.location.href = `../profilePageUser.html?postsId=${user.id}`;
 }
-// TO GO TO PROFILE PAGE FOR CURRENT USER  ==> //
 
-// TO GO TO PROFILE PAGE FOR OTHER USER  ==> //
 function toProfile(id) {
   window.location.href = `../profilePageUser.html?postsId=${id}`;
 }
-// TO GO TO PROFILE PAGE FOR OTHER USER  ==> //
 
-// POST CLICKED FUNCTION ==>  this function throw id to next page to allow me use id to get the post that i clicked it to show it in the next page //
 function postClicked(id) {
   window.location = `../postDetails.html?postsId=${id}`;
 }
-
+// NAVIGATION FUNCTIONS //
