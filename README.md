@@ -24,12 +24,13 @@ The app focuses on smooth user experience, responsive UI, and dynamic content up
 
 ## ✨ Features
 
-- 🔐 **User Authentication:** Secure login, logout, and session management.  
+- 🔐 **User Authentication:** Secure login, logout, and session handling with local storage.  
 - 📝 **Post Management:** Create, edit, and delete posts dynamically.  
-- 💬 **Comment System:** Engage with posts through comments.  
-- 👤 **User Profiles:** View personal and other users’ profiles.  
-- ⚡ **Dynamic Feed:** Auto updates and pagination for smoother performance.  
-- 📱 **Responsive Design:** Optimized for both desktop and mobile screens.  
+- 💬 **Comment System:** Add and view comments under posts.  
+- 👤 **User Profiles:** View your own profile and other users’ profiles with their posts.  
+- ⚡ **Pagination:** Efficiently loads posts page by page to improve performance and reduce loading time.  
+- 🔄 **Dynamic Feed:** Automatically refreshes content for a smoother scrolling experience.  
+- 📱 **Responsive UI:** Fully responsive layout built with CSS and Bootstrap.  
 
 ---
 
