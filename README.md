@@ -6,10 +6,10 @@
 ---
 
 ## 📸 Preview
-> ![Home Page] <img width="1920" height="885" alt="Screenshot (475)" src="https://github.com/user-attachments/assets/fffc1587-f113-461e-8c46-7111a7a9fa54" />
-> ![Profile Page]<img width="1920" height="896" alt="Screenshot (477)" src="https://github.com/user-attachments/assets/2fac0d2e-dcc8-4b20-89fa-8ef50a5bf150" />
-<img width="1920" height="894" alt="Screenshot (472)" src="https://github.com/user-attachments/assets/57031cdf-086f-4325-8162-a8e90c571893" />
-<img width="1892" height="897" alt="Screenshot (470)" src="https://github.com/user-attachments/assets/42ccdb67-da29-4a3a-b5fe-75cfd3a101b5" />
+> ![Home Page](/screenshots/home.png)
+> ![Profile Page](/screenshots/profile.png)
+> ![add Posts](/screenshots/add.png)
+> ![General Page](/screenshots/Screenshot(470).png)
 
 
 ---
