@@ -9,7 +9,7 @@
 > ![Home Page](/screenshots/home.png)
 > ![Profile Page](/screenshots/profile.png)
 > ![add Posts](/screenshots/add.png)
-> ![General Page](/screenshots/Screenshot(470).png)
+> ![General Page](/Screenshots/Screenshot(470).png)
 
 
 ---
